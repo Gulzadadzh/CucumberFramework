@@ -5,41 +5,40 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.hrms.testbase.BaseClass;
-import com.hrms.testbase.PageInitializer;
+import com.hrms.utils.CommonMethods;
+import com.hrms.utils.ConfigsReader;
 
-public class LoginPageElements extends PageInitializer{
+public class LoginPageElements extends BaseClass {
+	@FindBy(id = "txtUsername")
+	public static WebElement usernameTextBox;
 
-	@FindBy(id="txtUsername")
-	public WebElement userNametextBox;
-	
-	@FindBy(xpath="//input[@id = 'txtPassword']")
-	public WebElement passwordTextBox;
+	@FindBy(id = "txtPassword")
+	public static WebElement passwordTextBox;
 
-	@FindBy(css = "input#btnLogin")
-	public WebElement btnLogin;
-	
-	@FindBy(id = "divLogo")
-	public WebElement syntaxLogo;
-	
+	@FindBy(id = "btnLogin")
+	public static WebElement loginBtn;
+
 	@FindBy(id = "spanMessage")
-	public WebElement spanMessage;
+	public WebElement errorMsg;
 	
-	@FindBy(id = "logInPanelHeading")
-	public WebElement loginPanelHeading;
-	
-	
-	/**
-	 * this method will login tohrms by the given username and password
-	 * @param username
-	 * @param password
-	 */
-	public void LoginToHrms(String username, String password) {
-		login.userNametextBox.sendKeys(username);
-		login.passwordTextBox.sendKeys(username);
-		login.btnLogin.click();
+	public void login() {
+		CommonMethods.sendText(usernameTextBox, ConfigsReader.getPropValue("username"));
+		CommonMethods.sendText(passwordTextBox, ConfigsReader.getPropValue("password"));
+		CommonMethods.click(loginBtn);
 	}
+	
+	public static void login(String username, String password) {
+		CommonMethods.sendText(usernameTextBox, username);
+		CommonMethods.sendText(passwordTextBox, password);
+		CommonMethods.click(loginBtn);
+	}
+
+	public static final String ERROR_MESSAGE_BLANK_USERNAME = "Username cannot be empty";
+	public static final String ERROR_MESSAGE_BLANK_PASSWORD = "Password cannot be empty";
+	public static final String ERROR_MESSAGE_INVALID_PASSWORD = "Invalid credentials";
+	public static final String ERROR_MESSAGE_INVALID_CREDENTIALS = "Invalid credentials";
+
 	public LoginPageElements() {
 		PageFactory.initElements(driver, this);
 	}
-	
 }

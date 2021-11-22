@@ -1,74 +1,83 @@
 package com.hrms.utils;
 
 import java.io.File;
-
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.impl.store.Path;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.hrms.testbase.BaseClass;
-import com.hrms.testbase.PageInitializer;
+import com.hrms.testbase.PagesInitializer;
 
-public class CommonMethods extends PageInitializer {
-
+public class CommonMethods extends PagesInitializer {
 	/**
-	 * Method that sends text to any given element
+	 * Method that sends text to any given web element
 	 * 
 	 * @param element
 	 * @param text
 	 */
-
 	public static void sendText(WebElement element, String text) {
 		element.clear();
 		element.sendKeys(text);
 	}
 
 	/**
-	 * Method return Object of JavaScript Executer type
+	 * Method returns object of JavascriptExecutor type
 	 * 
-	 * @return js object
+	 * @return JavascriptExecutor object
 	 */
-	public static JavascriptExecutor getJSExecuter() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
+	public static JavascriptExecutor getJSExecutor() {
+		JavascriptExecutor js = (JavascriptExecutor) BaseClass.driver;
 		return js;
-
 	}
 
 	/**
-	 * Methods performs click using JavaScript executer
+	 * Method performs click using JavascriptExecutor
 	 * 
 	 * @param element
 	 */
-
 	public static void jsClick(WebElement element) {
-		getJSExecuter().executeScript("argument[0].click()", element);
+		getJSExecutor().executeScript("arguments[0].click();", element);
 	}
 
 	/**
-	 * Methods scrolls up using JavaScript executor
+	 * Method scrolls up using JavaScript Executor
 	 * 
 	 * @param pixel
 	 */
 	public static void scrollUp(int pixel) {
-		getJSExecuter().executeScript("window.scrollBy(0, -" + pixel + ")");
+		getJSExecutor().executeScript("window.scrollBy(0, -" + pixel + ")");
 	}
 
 	/**
-	 * Methods scrolls down using JavaScript executor
+	 * Method scrolls down using JavaScript Executor
 	 * 
 	 * @param pixel
 	 */
-	public static void scrollDown(int pixel) {
-		getJSExecuter().executeScript("window.scrollBy(0," + pixel + ")");
+	public static void srollDown(int pixel) {
+		getJSExecutor().executeScript("window.scrollBy(0," + pixel + ")");
 	}
 
 	public static WebDriverWait getWaitObject() {
@@ -91,31 +100,162 @@ public class CommonMethods extends PageInitializer {
 	 * @param fileName
 	 */
 	public static byte[] takeScreenshot(String fileName) {
-
 		TakesScreenshot ts = (TakesScreenshot) driver;
-		byte[] bytes =ts.getScreenshotAs(OutputType.BYTES);
-		
+		byte[] bytes = ts.getScreenshotAs(OutputType.BYTES);
+
 		File src = ts.getScreenshotAs(OutputType.FILE);
 		try {
-			FileUtils.copyFile(src, new File(Constants.SCREENSHOT_FILEPATH + fileName +getTimeStamp("yyyy-MM-dd-HH-mm-ss")+".png"));
+			FileUtils.copyFile(src, new File(Constants.SCREENSHOT_FILEPATH + fileName + getTimeStamp() + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		return bytes;
-		
-		/**
-		 * This method will generate timeStamp
-		 * 
-		 */
+
 	}
-	 public static String getTimeStamp(String pattern){
-	        Date date = new Date();
-	        //pattern YYYY-MM-DD-HH-MM-SS-MS
-	        //to format the date according to our choice we have a function
-	        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-	        return sdf.format(date);
 
+	/**
+	 * This method will generate timeStamp
+	 * 
+	 * @return
+	 */
+	public static String getTimeStamp() {
+		Date date = new Date();
+		System.out.println(date.getTime());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+		return sdf.format(date);
+	}
 
-}
-	
+	/**
+	 * Method will click on checkbox or radio button by the given list of
+	 * webelements and the value
+	 * 
+	 * @param radioOrCheckBoxes
+	 * @param value
+	 */
+	public static void clickRadioOrCheckBox(List<WebElement> radioOrCheckBoxes, String value) {
+		String actualValue;
+		for (WebElement radioOrCheckBox : radioOrCheckBoxes) {
+			actualValue = radioOrCheckBox.getAttribute("value").trim();
+			if (radioOrCheckBox.isEnabled() && actualValue.equals(value)) {
+				jsClick(radioOrCheckBox);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Method will select an option from the dropdown by given webelement and
+	 * visible text value
+	 * 
+	 * @param dd
+	 * @param visibleTextOrValue
+	 */
+	public static void selectDDValue(WebElement dd, String visibleTextOrValue) {
+		try {
+			Select select = new Select(dd);
+			List<WebElement> options = select.getOptions();
+			for (WebElement option : options) {
+				if (option.getText().equals(visibleTextOrValue)) {
+					select.selectByVisibleText(visibleTextOrValue);
+					break;
+				}
+			}
+		} catch (UnexpectedTagNameException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method will select an option from the dropdown by given webelement and
+	 * visible text value
+	 * 
+	 * @param dd
+	 * @param visibleTextOrValue
+	 */
+	public static void selectDDValue(WebElement dd, int index) {
+		try {
+			Select select = new Select(dd);
+			List<WebElement> options = select.getOptions();
+			int size = options.size();
+			if (size > index) {
+				select.selectByIndex(index);
+			}
+		} catch (UnexpectedTagNameException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method will swith to a frame by the given frame web element
+	 * 
+	 * @param iFrame
+	 */
+	public static void switchToFrame(WebElement iFrame) {
+		try {
+			driver.switchTo().frame(iFrame);
+		} catch (NoSuchFrameException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method will swith to a frame by the given frame index
+	 * 
+	 * @param frameIndex
+	 */
+
+	public static void switchToFrame(int frameIndex) {
+		try {
+			driver.switchTo().frame(frameIndex);
+		} catch (NoSuchFrameException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method will swith to a frame by the given frame nameOrId
+	 * 
+	 * @param nameOrId
+	 */
+
+	public static void switchToFrame(String nameOrId) {
+		try {
+			driver.switchTo().frame(nameOrId);
+		} catch (NoSuchFrameException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method will switch to a child Window
+	 */
+	public static void swithToChildWindow() {
+		String mainWindow = driver.getWindowHandle();
+		Set<String> allWindows = driver.getWindowHandles();
+		for (String window : allWindows) {
+			if (!window.equals(mainWindow)) {
+				driver.switchTo().window(window);
+				break;
+			}
+		}
+	}
+
+	static String jsonFile;
+
+	public static String readJson(String fileName) {
+		
+		try {
+			jsonFile = new String(Files.readAllBytes(Paths.get(fileName)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonFile;
+	}
+
 }

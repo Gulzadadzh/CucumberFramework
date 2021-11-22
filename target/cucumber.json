@@ -1,0 +1,139 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "start_timestamp": "2021-11-22T20:33:04.681Z",
+        "before": [
+          {
+            "result": {
+              "error_message": "java.lang.NullPointerException\n\tat com.hrms.testbase.BaseClass.setUp(BaseClass.java:28)\n\tat com.hrms.stepDefinitions.Hooks.startTest(Hooks.java:14)\n",
+              "duration": 4244000000,
+              "status": "failed"
+            },
+            "match": {
+              "location": "com.hrms.stepDefinitions.Hooks.startTest()"
+            }
+          }
+        ],
+        "line": 4,
+        "name": "Login with valid credentials",
+        "description": "",
+        "id": "login-functionality;login-with-valid-credentials",
+        "after": [
+          {
+            "result": {
+              "error_message": "java.lang.NullPointerException\n\tat com.hrms.utils.CommonMethods.takeScreenshot(CommonMethods.java:104)\n\tat com.hrms.stepDefinitions.Hooks.endTest(Hooks.java:21)\n",
+              "duration": 8000000,
+              "status": "failed"
+            },
+            "match": {
+              "location": "com.hrms.stepDefinitions.Hooks.endTest(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 4000000,
+              "status": "skipped"
+            },
+            "line": 6,
+            "name": "login with valid credentials",
+            "match": {
+              "location": "com.hrms.stepDefinitions.LoginStepDefinitions.login_with_valid_credentials()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 7,
+            "name": "verify the dashboard is displayed",
+            "match": {
+              "location": "com.hrms.stepDefinitions.LoginStepDefinitions.verify_the_dashboard_is_displayed()"
+            },
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2021-11-22T20:33:09.101Z",
+        "before": [
+          {
+            "result": {
+              "error_message": "java.lang.NullPointerException\n\tat com.hrms.testbase.BaseClass.setUp(BaseClass.java:28)\n\tat com.hrms.stepDefinitions.Hooks.startTest(Hooks.java:14)\n",
+              "duration": 61000000,
+              "status": "failed"
+            },
+            "match": {
+              "location": "com.hrms.stepDefinitions.Hooks.startTest()"
+            }
+          }
+        ],
+        "line": 11,
+        "name": "login with invalid credentials",
+        "description": "",
+        "id": "login-functionality;login-with-invalid-credentials",
+        "after": [
+          {
+            "result": {
+              "error_message": "java.lang.NullPointerException\n\tat com.hrms.utils.CommonMethods.takeScreenshot(CommonMethods.java:104)\n\tat com.hrms.stepDefinitions.Hooks.endTest(Hooks.java:21)\n",
+              "duration": 3000000,
+              "status": "failed"
+            },
+            "match": {
+              "location": "com.hrms.stepDefinitions.Hooks.endTest(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 2000000,
+              "status": "skipped"
+            },
+            "line": 13,
+            "name": "login with invalid credentials",
+            "match": {
+              "location": "com.hrms.stepDefinitions.LoginStepDefinitions.login_with_invalid_credentials()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 14,
+            "name": "varify the error message",
+            "match": {
+              "location": "com.hrms.stepDefinitions.LoginStepDefinitions.varify_the_error_message()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke"
+          }
+        ]
+      }
+    ],
+    "name": "Login Functionality",
+    "description": "",
+    "id": "login-functionality",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/features/Login.feature",
+    "tags": []
+  }
+]
