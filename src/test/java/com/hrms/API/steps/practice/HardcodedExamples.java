@@ -1,11 +1,13 @@
 package com.hrms.API.steps.practice;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.cucumber.java.en.Given;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -23,7 +25,7 @@ public class HardcodedExamples {
 	String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzc2ODAzMDQsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTYzNzcyMzUwNCwidXNlcklkIjoiMjE5OSJ9.F78VAx9_xV315iD_gZ09BKAm4RIUTc2WezhPzdIaNi8";
 	static String employeeID;
 
-	@Test
+	//@Test
 	public void sampleTest() {
 
 		// BaseURI for all endpoints
@@ -49,8 +51,9 @@ public class HardcodedExamples {
 	}
 
 
-		@Test
-		public void aPOSTcreateEmployee() {
+	
+	public void aPOSTcreateEmployee() {
+
 			/** Preparing request for creating an employee */
 			RequestSpecification createEmployeeRequest = given().header("Authorization", token)
 					.header("Content-Type", "application/json")
@@ -100,4 +103,45 @@ public class HardcodedExamples {
 		
 		
 	}
+
+
+	@Test
+	public void bGETcreateEmployee() {
+		
+		/** Preparing request to get created employee */
+	RequestSpecification getCreatedEmployeeRequest=given().header("Content-type", "application/json")
+			.header("Authorithation", token).queryParam("employee_id", employeeID);
+	
+	
+	/** Storing response for retrieving created employee */
+	Response getCreatedEmployeeResponse = getCreatedEmployeeRequest.when().get("/getOneEmployee.php");
+	
+	
+	/** Printing response */
+	getCreatedEmployeeResponse.prettyPrint();
+	
+	/** Storing response employee ID into empID to compare with static global employee ID*/
+	String empID = getCreatedEmployeeResponse.body().jsonPath().getString("employee.employee_id");	
+	
+	/** Comparing empID with stored employeeID from created employee call*/
+	boolean verifyingEmployeeID = empID.equalsIgnoreCase(employeeID);
+	
+	/** Asserting to verify the above condition is true */
+	Assert.assertTrue(verifyingEmployeeID);
+	
+	/** Verifying status code is 200 */
+	getCreatedEmployeeResponse.then().assertThat().statusCode(200);
+	
+	
+	
+	
+	}
+	
+
+
+
+
+
+
+
 }
