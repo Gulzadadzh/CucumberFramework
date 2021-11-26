@@ -7,10 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 import com.hrms.testbase.BaseClass;
 
 public class AddEmployeePageElements extends BaseClass {
-	
 	@FindBy(xpath = "//input[@name='chkLogin']")
 	public WebElement loginDetailsCheckbox;
-
+	
 	@FindBy(xpath = "//a[@id='menu_pim_addEmployee']")
 	public WebElement addEmpBtn;
 
@@ -25,10 +24,10 @@ public class AddEmployeePageElements extends BaseClass {
 
 	@FindBy(id = "user_password")
 	public WebElement passwordTextBox;
-
+	
 	@FindBy(id = "employeeId")
 	public WebElement empId;
-
+	
 	@FindBy(id = "middleName")
 	public WebElement middleName;
 
@@ -40,7 +39,7 @@ public class AddEmployeePageElements extends BaseClass {
 
 	@FindBy(id = "re_password")
 	public WebElement confirmPasswordBtn;
-
+	
 	@FindBy(xpath = "//div[@id='profile-pic']/h1")
 	public WebElement empInfo;
 

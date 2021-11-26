@@ -7,16 +7,15 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/features/", 
-				glue = "com/hrms/stepDefinitions", 
+				glue = "com/hrms/API/Final/steps", 
 				dryRun = false, 
 				monochrome = true, 
-				tags = "@smoke", 
+				tags = "@APIworkflow", 
 				strict = true, 
 				plugin = {"pretty", 
 						"html:target/cucumber-default-reports", 
-						"rerun:target/FailedTests.txt",
+						"rerun:target/FailedTests.txt", 
 						"json:target/cucumber.json"}) 
-					
-public class SmokeRunner {
-
+public class APIRunner {
+	
 }

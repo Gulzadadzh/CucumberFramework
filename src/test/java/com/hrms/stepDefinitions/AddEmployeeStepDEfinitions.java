@@ -17,7 +17,6 @@ public class AddEmployeeStepDefinitions extends CommonMethods {
 	@Then("navigate to add employee page")
 	public void navigate_to_add_employee_page() {
 		click(dashboard.pim);
-//		click(addEmp.addEmpBtn);
 		jsClick(addEmp.addEmpBtn);
 	}
 

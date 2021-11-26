@@ -1,16 +1,21 @@
 package com.hrms.API.steps.practice;
 
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import io.cucumber.java.en.Given;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+
+/** Can work with Cucumber as well, sorts results */
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
 public class HardcodedExamples {
 
@@ -21,9 +26,12 @@ public class HardcodedExamples {
 	 * of call are you making? Then -Verification
 	 * 
 	 */
-	String baseURI = RestAssured.baseURI = "http://18.232.148.34/syntaxapi/api";
-	String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzc2ODAzMDQsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTYzNzcyMzUwNCwidXNlcklkIjoiMjE5OSJ9.F78VAx9_xV315iD_gZ09BKAm4RIUTc2WezhPzdIaNi8";
+	String baseURI = RestAssured.baseURI = "hrm.syntaxtechs.net/syntaxapi/api";
+	String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzc3ODUxNTMsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTYzNzgyODM1MywidXNlcklkIjoiMjE5OSJ9.3tmXRC-KdylLdg0dy00jYA7cdAOLyXzWW8px24p1NGc";	
 	static String employeeID;
+	
+	
+
 
 	//@Test
 	public void sampleTest() {
@@ -70,7 +78,7 @@ public class HardcodedExamples {
 					//.log().all();
 
 			/** Making call to /createEmployee.php */
-			Response createEmployeeResponse = createEmployeeRequest.when().post("/createEmployee.php");
+			Response createEmployeeResponse = createEmployeeRequest.when().log().all().post("/createEmployee.php");
 			/** Printing response */
       		createEmployeeResponse.prettyPrint();
 
@@ -132,16 +140,122 @@ public class HardcodedExamples {
 	/** Verifying status code is 200 */
 	getCreatedEmployeeResponse.then().assertThat().statusCode(200);
 	
+	/** Storing full responseas a String so that we are able it as an argument with JsonPath */
+	String response = getCreatedEmployeeResponse.asString();
 	
+	/** Created object of JsonPath */
+	JsonPath js = new JsonPath(response);
+	
+	/**Grabbing employee ID using 'js' */
+	String employeeID = js.getString("employee.employee_id");
+	String employee_firstname = js.getString("employee[0].emp_firstname");
+	String employee_middlename = js.getString("employee[0].emp_middle_name");
+	String employee_lastname = js.getString("employee[0].emp_lastname");
+	String employee_birthday = js.getString("employee[0].emp_birthday");
+	String employee_gender = js.getString("employee[0].emp_gender");
+	String employee_jobTitle = js.getString("employee[0].emp_job_title");
+	String employee_status = js.getString("employee[0].emp_status");
+
+	/** */
+	Assert.assertEquals(employeeID, empID);
+	Assert.assertTrue(employeeID.contentEquals(empID));
+	Assert.assertEquals("FirstName", employee_firstname);
+	Assert.assertEquals("MiddleName1409", employee_middlename);
+	Assert.assertEquals("LastName1409", employee_lastname);
+	Assert.assertEquals("1985-10-15", employee_birthday);
+	Assert.assertEquals("Male", employee_gender);
+	Assert.assertEquals("Cloud Architect", employee_jobTitle);
+	Assert.assertEquals("Employee", employee_status);
 	
 	
 	}
-	
+	@Test
+	public void cGETallEmployees() {
+		/** Preparing request to get all employees */
+		RequestSpecification getAllEmployeesRequest = given().header("Content-Type", "application/json")
+				.header("Authorization", token);
 
+		/** Storing response into getAllEmployeesResponse */
+		Response getAllEmployeesResponse = getAllEmployeesRequest.when().get("/getAllEmployees.php");
 
+		/** Printing the response */
+//		getAllEmployeesResponse.prettyPrint();
 
+		/** Storing response as a String */
+		String response = getAllEmployeesResponse.asString();
 
+		/**
+		 * Creating object of JsonPath and passing response as a String as an argument
+		 */
+		JsonPath js = new JsonPath(response);
 
+		/** Retreiving the size of the array (the number of object in the array) */
+		int count = js.getInt("Employees.size()");
+//		System.out.println(count);
 
+//		for (int i = 0; i < count; i++) {
+//			String allEmployeeIDs = js.getString("Employees[" + i + "].employee_id");
+////			System.out.println(id);
+//			if (allEmployeeIDs.contentEquals(employeeID)) {
+//				System.out.println("Employee ID: " + employeeID + " is present in the body");
+//				String firstNameOfEmpId = js.getString("Employees[" + i + "].emp_firstname");
+//				System.out.println(firstNameOfEmpId);
+//				break;
+//			}
+//		}
 
+		/** for loop to print first names of all employees */
+//		for(int i = 0; i <count; i++) {
+//			String emp_firstname = js.getString("Employees[" + i + "].emp_firstname");
+//			System.out.println(emp_firstname);
+//		}
+
+	}
+	@Test
+	public void dPUTupdateCreatedEmployee() {
+		/** Preparing request to update the employee */
+		RequestSpecification getCreatedEmployeeRequest = given().header("Content-Type", "application/json")
+				.header("Authorization", token)
+				.body("{\n"
+						+ "  \"employee_id\": \"" + employeeID + "\",\r\n"
+						+ "    \"emp_firstname\": \"Masha\",\n"
+						+ "    \"emp_lastname\": \"Medved\",\n"
+						+ "    \"emp_middle_name\": \"And\",\n"
+						+ "    \"emp_gender\": \"F\",\n"
+						+ "    \"emp_birthday\": \"2016-09-21\",\n"
+						+ "    \"emp_status\": \"Employee\",\n"
+						+ "    \"emp_job_title\": \"Cloud Architect\"\n"
+						+ "\n"
+						+ "}")
+				.log().all();
+
+		/** Storing response into getCreatedEmployeeResponse */
+		Response getCreatedEmployeeResponse = getCreatedEmployeeRequest.when().put("\r\n" + "/updateEmployee.php");
+
+		/** Storing getCreatedEmployeeResponse as a String */
+		String response = getCreatedEmployeeResponse.asString();
+
+		/**
+		 * Creating object of JsonPath and passing response as a String as an argument
+		 */
+		JsonPath js = new JsonPath(response);
+
+		/** Retreiving the employee ID from the response */
+		String empID = js.getString("employee[0].employee_id");
+
+		/** Comparing if employee ID equels ti the employee ID after the update */
+		Assert.assertEquals(employeeID, empID);
+
+		/** Comparing if the updated first name is correct */
+		String empFirstName = js.getString("employee[0].emp_firstname");
+		Assert.assertEquals("UpdatedName", empFirstName);
+
+	}
 }
+
+
+
+
+
+
+
