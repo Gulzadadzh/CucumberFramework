@@ -2,21 +2,26 @@ package com.hrms.API.Final.steps;
 
 import com.hrms.utils.CommonMethods;
 
+
 import io.cucumber.java.en.Given;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import static io.restassured.RestAssured.*;
 
 public class GenerateTokenSteps {
 	
-	String BaseURI = RestAssured.baseURI = "http://18.232.148.34/syntaxapi/api";
+	String BaseURI = RestAssured.baseURI = "http://hrm.syntaxtechs.net/syntaxapi/api";
 	public static String token;
 
 	@Given("a JWT is generated")
 	public void a_JWT_is_generated() {
 		
 		/** Preparing request to generate token */
-		//RequestSpecification generateTokenRequest = APICommonMethods
+		//RequestSpecification generateTokenRequest = given().header("Content-type", "application/json").body("{\n"
+		//    "email": "dzhusukeeva@gmail.com",
+		//    "password": "1994Gulya@"
+		//			+ "}");
 		//		.generateTokenRequest(CommonMethods.readJson(APIConstants.GENERATE_TOKEN_JSON));
 
 		/** Storing response into generateTokenResponse */

@@ -26,14 +26,15 @@ public class HardcodedExamples {
 	 * of call are you making? Then -Verification
 	 * 
 	 */
-	String baseURI = RestAssured.baseURI = "hrm.syntaxtechs.net/syntaxapi/api";
-	String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzc3ODUxNTMsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTYzNzgyODM1MywidXNlcklkIjoiMjE5OSJ9.3tmXRC-KdylLdg0dy00jYA7cdAOLyXzWW8px24p1NGc";	
+	String baseURI = RestAssured.baseURI = "http://hrm.syntaxtechs.net/syntaxapi/api";
+	String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzg1MzYzMTQsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTYzODU3OTUxNCwidXNlcklkIjoiMjE5OSJ9.FYMptLkSGQia4lyvGMDF7D4kKKP25c2zPUZimsVnDrM";
 	static String employeeID;
 	
 	
+	
 
 
-	//@Test
+	@Test
 	public void sampleTest() {
 
 		// BaseURI for all endpoints
@@ -43,7 +44,7 @@ public class HardcodedExamples {
 		/** Preparing request for /getOneEmployee.php */
 		/** Using .log().all() to print out everything being sent with the request */
 		RequestSpecification prepairingGetOneEmployeeRequest = given().header("Authorization", token)
-				.header("Content-Type", "application-json").queryParam("employee_id", "8625").log().all();
+				.header("Content-Type", "application-json").queryParam("employee_id", "25213A").log().all();
 
 		/** Making call to /getOneEmployee.php */
 		Response getOneEmployeeResponse = prepairingGetOneEmployeeRequest.when().get("/getOneEmployee.php");
@@ -59,7 +60,7 @@ public class HardcodedExamples {
 	}
 
 
-	
+	//@Test
 	public void aPOSTcreateEmployee() {
 
 			/** Preparing request for creating an employee */
@@ -113,7 +114,7 @@ public class HardcodedExamples {
 	}
 
 
-	@Test
+	//@Test
 	public void bGETcreateEmployee() {
 		
 		/** Preparing request to get created employee */
@@ -169,7 +170,7 @@ public class HardcodedExamples {
 	
 	
 	}
-	@Test
+	//@Test
 	public void cGETallEmployees() {
 		/** Preparing request to get all employees */
 		RequestSpecification getAllEmployeesRequest = given().header("Content-Type", "application/json")
@@ -211,7 +212,7 @@ public class HardcodedExamples {
 //		}
 
 	}
-	@Test
+	//@Test
 	public void dPUTupdateCreatedEmployee() {
 		/** Preparing request to update the employee */
 		RequestSpecification getCreatedEmployeeRequest = given().header("Content-Type", "application/json")
