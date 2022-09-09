@@ -11,7 +11,7 @@ import io.cucumber.junit.CucumberOptions;
 				dryRun = false, 
 				monochrome = true, 
 				tags = "@smoke", 
-				strict = true, 
+				//strict = true, 
 				plugin = {"pretty", 
 						"html:target/cucumber-default-reports", 
 						"rerun:target/FailedTests.txt",

@@ -21,7 +21,10 @@ public class BaseClass {
 	public static void setUp() {
 		ConfigsReader.readProperties(Constants.CONFIGURATION_FILEPATH);
 		String headless = ConfigsReader.getPropValue("headless");
+		
+		
 		switch (ConfigsReader.getPropValue("browser").toLowerCase()) {
+		
 		case "chrome":
 			WebDriverManager.chromedriver().setup();
 			ChromeOptions chromeOptions = new ChromeOptions();

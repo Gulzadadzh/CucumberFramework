@@ -11,7 +11,7 @@ import io.cucumber.junit.CucumberOptions;
 				dryRun = true, 
 				monochrome = true, 
 				tags = "@testFeature", 
-				strict = true, 
+				//strict = true, 
 				plugin = {"pretty", 
 						"html:target/cucumber-default-reports", 
 						"rerun:target/FailedTests.txt", 

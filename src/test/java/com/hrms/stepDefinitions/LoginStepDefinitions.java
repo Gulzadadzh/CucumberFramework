@@ -10,8 +10,8 @@ import io.cucumber.java.en.When;
 
 public class LoginStepDefinitions extends CommonMethods {
 
-	@When("login with valid credentials")
-	public void login_with_valid_credentials() {
+	@Given("go to HRMS login page")
+	public void go_to_HRMS_login_page() {
 		login.login();
 	}
 
@@ -30,4 +30,7 @@ public class LoginStepDefinitions extends CommonMethods {
 		Assert.assertEquals(login.ERROR_MESSAGE_INVALID_CREDENTIALS, login.errorMsg.getText());
 	}
 
+	@Then("quit the browser")
+	public void quit_the_browser() {
+	}
 }
