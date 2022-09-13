@@ -8,7 +8,7 @@ import com.hrms.utils.APICommonMethods;
 
 public class PagesInitializer extends BaseClass {
 
-	protected static LoginPageElements login;
+	public static LoginPageElements login;
 	protected static AddEmployeePageElements addEmp;
 	protected static DashboardPageElements dashboard;
 	protected static EmployeeListPageElements empList;
